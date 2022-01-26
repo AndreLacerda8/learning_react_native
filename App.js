@@ -1,19 +1,17 @@
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { Header } from './components/Header'
 
 export default function App() {
   
   return (
-    <View style={styles.container}>
-      <Text>Hello world</Text>
+    <View style={styles.screen}>
+      <Header title='Guess a Number' />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+  screen: {
+    flex: 1
   }
 });
