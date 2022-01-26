@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    width: '50%',
+    width: '80%',
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
