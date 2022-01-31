@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#ddd',
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginVertical: 10
   },
 
   bgImage: {
