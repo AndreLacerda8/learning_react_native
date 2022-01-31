@@ -1,4 +1,6 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { CustomHeaderButton } from '../components/HeaderButton'
 import { CategoryGridTile } from '../components/CategoryGridTile'
 
 import { CATEGORIES } from '../data/dummy-data'
@@ -31,8 +33,17 @@ export function CategoriesScreen(props){
   )
 }
 
-CategoriesScreen.navigationOptions = {
-  headerTitle: 'Meals Categories'
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: 'Meals Categories',
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item title='Menu' iconName='ios-menu' onPress={() => {
+          navData.navigation.toggleDrawer()
+        }} />
+      </HeaderButtons>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
