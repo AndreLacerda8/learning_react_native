@@ -1,12 +1,18 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
+import { MealItem } from '../components/MealItem'
 import { CATEGORIES, MEALS } from '../data/dummy-data'
 
 export function CategoryMealsScreen(props){
   function renderMealItem(itemData){
     return (
-      <View>
-        <Text>{itemData.item.title}</Text>
-      </View>
+      <MealItem
+        title={itemData.item.title}
+        image={itemData.item.imageUrl}
+        duration={itemData.item.duration}
+        complexity={itemData.item.complexity}
+        affordability={itemData.item.affordability}
+        onSelectMeal={() => {}}
+      />
     )
   }
 
@@ -20,6 +26,7 @@ export function CategoryMealsScreen(props){
         data={displayedMeals}
         keyExtractor={item => item.id}
         renderItem={renderMealItem}
+        style={{ width: '100%' }}
       />
     </View>
   )
@@ -38,6 +45,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
   }
 })
