@@ -11,6 +11,13 @@ import { MealDetailScreen } from '../screens/MealDetailScreen'
 import { FavoritesScreen } from '../screens/FavoritesScreen'
 import { Platform } from 'react-native'
 
+const defaultStackNavOptions = {
+  headerStyle: {
+    backgroundColor: Colors.primaryColor
+  },
+  headerTintColor: 'white'
+}
+
 const MealsNavigator = createStackNavigator({
   Categories: CategoriesScreen,
   CategoryMeals: {
@@ -18,12 +25,14 @@ const MealsNavigator = createStackNavigator({
   },
   MealDetail: MealDetailScreen
 }, {
-  defaultNavigationOptions: {
-    headerStyle: {
-      backgroundColor: Colors.primaryColor
-    },
-    headerTintColor: 'white'
-  }
+  defaultNavigationOptions: defaultStackNavOptions
+})
+
+const FavNavigator = createStackNavigator({
+  Favorites: FavoritesScreen,
+  MealDetail: MealDetailScreen
+}, {
+  defaultNavigationOptions: defaultStackNavOptions
 })
 
 const tabScreenConfig = {
@@ -37,7 +46,7 @@ const tabScreenConfig = {
     }
   },
   Favorites: {
-    screen: FavoritesScreen,
+    screen: FavNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => {
         return <Ionicons name='ios-star' size={22} color={tabInfo.tintColor} />
