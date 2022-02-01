@@ -1,19 +1,31 @@
-import { Button, Image, StyleSheet, Text, View } from 'react-native'
+import { Button, Image, StyleSheet, Text, View, TouchableOpacity, Platform, TouchableNativeFeedback } from 'react-native'
 import Colors from '../../constants/Colors'
 
 export function ProductItem(props){
+  let TouchableComponent = TouchableOpacity
+
+  if(Platform.OS === 'android' && Platform.Version >= 21){
+    TouchableComponent = TouchableNativeFeedback
+  }
+
   return (
     <View style={styles.product}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: props.image }} />
-      </View>
-      <View style={styles.details}>
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.price}>${props.price.toFixed(2)}</Text>
-      </View>
-      <View style={styles.actions}>
-        <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail} />
-        <Button color={Colors.primary} title='To Cart' onPress={props.onAddToCart} />
+      <View style={styles.touchable}>
+        <TouchableComponent onPress={props.onViewDetail} useForeground>
+          <View>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={{ uri: props.image }} />
+            </View>
+            <View style={styles.details}>
+              <Text style={styles.title}>{props.title}</Text>
+              <Text style={styles.price}>${props.price.toFixed(2)}</Text>
+            </View>
+            <View style={styles.actions}>
+              <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail} />
+              <Button color={Colors.primary} title='To Cart' onPress={props.onAddToCart} />
+            </View>
+          </View>
+        </TouchableComponent>
       </View>
     </View>
   )
@@ -29,7 +41,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
     height: 300,
-    margin: 20
+    margin: 20,
+    overflow: 'hidden'
+  },
+
+  touchable: {
+    overflow: 'hidden',
+    borderRadius: 10
   },
 
   imageContainer: {
