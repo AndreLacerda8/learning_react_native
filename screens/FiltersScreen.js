@@ -1,4 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
+import { CustomHeaderButton } from '../components/HeaderButton'
 
 export function FiltersScreen(props){
   return (
