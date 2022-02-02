@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CustomHeaderButton } from '../../components/UI/HeaderButton'
+import * as productsActions from '../../store/actions/products'
 
 export function EditProductScreen(props){
   const prodId = props.navigation.getParam('productId')
@@ -12,6 +13,21 @@ export function EditProductScreen(props){
   const [imageUrl, setImageUrl] = useState(editedProduct ? editedProduct.imageUrl : '')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState(editedProduct ? editedProduct.description : '')
+
+  const dispatch = useDispatch()
+
+  const submitHandler = useCallback(() => {
+    if(editedProduct){
+      dispatch(productsActions.updateProduct(prodId, title, description, imageUrl))
+    } else {
+      dispatch(productsActions.createProduct(title, description, imageUrl, +price))
+    }
+    props.navigation.goBack()
+  }, [dispatch, prodId, title, description, imageUrl, price])
+
+  useEffect(() => {
+    props.navigation.setParams({ submit: submitHandler })
+  }, [submitHandler])
 
   return (
     <ScrollView>
@@ -40,6 +56,7 @@ export function EditProductScreen(props){
 }
 
 EditProductScreen.navigationOptions = navData => {
+  const submitFn = navData.navigation.getParam('submit')
   return {
     headerTitle: navData.navigation.getParam('productId') ? 'Edit Product' : 'Add Product',
     headerRight: () => (
@@ -47,9 +64,7 @@ EditProductScreen.navigationOptions = navData => {
         <Item
           title='Save'
           iconName={Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'}
-          onPress={() => {
-            
-          }}
+          onPress={submitFn}
         />
       </HeaderButtons>
     )
