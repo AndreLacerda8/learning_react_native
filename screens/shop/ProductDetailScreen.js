@@ -15,7 +15,10 @@ export function ProductDetailScreen(props){
         <Button
           color={Colors.primary}
           title='Add To Cart'
-          onPress={() => dispatch(cartActions.addToCart(selectedProduct))} />
+          onPress={() => {
+            dispatch(cartActions.addToCart(selectedProduct))
+          }}
+        />
       </View>
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>

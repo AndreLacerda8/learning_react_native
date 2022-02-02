@@ -24,7 +24,9 @@ export function ProductsOverviewScreen(props){
               productTitle: itemData.item.title
             })
           }}
-          onAddToCart={() => dispatch(cartActions.addToCart(itemData.item))}
+          onAddToCart={() => {
+            dispatch(cartActions.addToCart(itemData.item))
+          }}
         />
       )}
     />
