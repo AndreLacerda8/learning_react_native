@@ -34,9 +34,13 @@ export function fetchProducts(){
 
 export function deleteProduct(productId){
   return async dispatch => {
-    await fetch(`${URL_FIREBASE}/products/${productId}.json`, {
+    const response = await fetch(`${URL_FIREBASE}/products/${productId}.json`, {
       method: 'DELETE'
     })
+
+    if(!response.ok){
+      throw new Error('Something went wrong!')
+    }
 
     dispatch({
       type: DELETE_PRODUCT,
@@ -77,7 +81,7 @@ export function createProduct(title, description, imageUrl, price){
 
 export function updateProduct(id, title, description, imageUrl){
   return async dispatch => {
-    await fetch(`${URL_FIREBASE}/products/${id}.json`, {
+    const response = await fetch(`${URL_FIREBASE}/products/${id}.json`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -88,6 +92,10 @@ export function updateProduct(id, title, description, imageUrl){
         imageUrl
       })
     })
+
+    if(!response.ok){
+      throw new Error('Something went wrong!')
+    }
 
     dispatch({
       type: UPDATE_PRODUCT,
