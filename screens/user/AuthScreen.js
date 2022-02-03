@@ -6,7 +6,7 @@ import { Card } from '../../components/UI/Card'
 import { Input } from '../../components/UI/Input'
 import Colors from '../../constants/Colors'
 import * as authActions from '../../store/actions/auth'
-import { useCallback, useReducer } from 'react'
+import { useCallback, useReducer, useState } from 'react'
 
 const FORM_INPUT_UPDATE = 'UPDATE'
 
@@ -34,6 +34,8 @@ const formReducer = (state, action) => {
 }
 
 export function AuthScreen(props){
+  const [isSignup, setIsSignup] = useState(false)
+
   const dispatch = useDispatch()
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -48,8 +50,14 @@ export function AuthScreen(props){
     formIsValid: false
   })
 
-  function signupHandler(){
-    dispatch(authActions.signup(formState.inputValues.email, formState.inputValues.password))
+  function authHandler(){
+    let action
+    if(isSignup){
+      action = authActions.signup(formState.inputValues.email, formState.inputValues.password)
+    } else {
+      action = authActions.login(formState.inputValues.email, formState.inputValues.password)
+    }
+    dispatch(action)
   }
 
   const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
@@ -91,16 +99,16 @@ export function AuthScreen(props){
             />
             <View style={styles.buttonContainer}>
               <Button
-                title='Login'
+                title={isSignup ? 'Sign Up' : 'Login'}
                 color={Colors.primary}
-                onPress={signupHandler}
+                onPress={authHandler}
               />
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title='Switch to Sign Up'
+                title={`Switch to ${isSignup ? 'Login' : 'SignUp'}`}
                 color={Colors.accent}
-                onPress={() => {}}
+                onPress={() => { setIsSignup(prevState => !prevState) }}
               />
             </View>
           </ScrollView>
