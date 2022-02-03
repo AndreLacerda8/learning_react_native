@@ -8,20 +8,27 @@ export const SET_PRODUCTS = 'SET_PRODUCTS'
 
 export function fetchProducts(){
   return async dispatch => {
-    const response = await fetch(`${URL_FIREBASE}/products.json`)
-    const responseData = await response.json()
-    const loadedProducts = []
-    for(const key in responseData){
-      loadedProducts.push(new Product(
-        key,
-        'u1',
-        responseData[key].title,
-        responseData[key].imageUrl,
-        responseData[key].description,
-        responseData[key].price
-      ))
+    try{
+      const response = await fetch(`${URL_FIREBASE}/products.json`)
+      if(!response.ok){
+        throw new Error('Something went wrong!')
+      }
+      const responseData = await response.json()
+      const loadedProducts = []
+      for(const key in responseData){
+        loadedProducts.push(new Product(
+          key,
+          'u1',
+          responseData[key].title,
+          responseData[key].imageUrl,
+          responseData[key].description,
+          responseData[key].price
+        ))
+      }
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts })
+    } catch(err){
+      throw err
     }
-    dispatch({ type: SET_PRODUCTS, products: loadedProducts })
   }
 }
 
