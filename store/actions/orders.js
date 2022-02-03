@@ -32,9 +32,10 @@ export function fetchOrders(){
 }
 
 export function addOrder(cartItems, totalAmount){
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token
     const date = new Date()
-    const response = await fetch(`${URL_FIREBASE}/orders/u1.json`, {
+    const response = await fetch(`${URL_FIREBASE}/orders/u1.json?auth=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -33,8 +33,9 @@ export function fetchProducts(){
 }
 
 export function deleteProduct(productId){
-  return async dispatch => {
-    const response = await fetch(`${URL_FIREBASE}/products/${productId}.json`, {
+  return async (dispatch, getState)=> {
+    const token = getState().auth.token
+    const response = await fetch(`${URL_FIREBASE}/products/${productId}.json?auth=${token}`, {
       method: 'DELETE'
     })
 
@@ -50,8 +51,9 @@ export function deleteProduct(productId){
 }
 
 export function createProduct(title, description, imageUrl, price){
-  return async dispatch => {
-    const response = await fetch(`${URL_FIREBASE}/products.json`, {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token
+    const response = await fetch(`${URL_FIREBASE}/products.json?auth=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -80,8 +82,9 @@ export function createProduct(title, description, imageUrl, price){
 }
 
 export function updateProduct(id, title, description, imageUrl){
-  return async dispatch => {
-    const response = await fetch(`${URL_FIREBASE}/products/${id}.json`, {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token
+    const response = await fetch(`${URL_FIREBASE}/products/${id}.json?auth=${token}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
