@@ -6,8 +6,13 @@ import { URL_SIGNUP, URL_SIGNIN } from '@env'
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const LOGOUT = 'LOGOUT'
 
-export function authenticate(userId, token){
-  return { type: AUTHENTICATE, userId, token }
+let timer
+
+export function authenticate(userId, token, expiryTime){
+  return dispatch => {
+    dispatch(setLogoutTimer(expiryTime))
+    dispatch({ type: AUTHENTICATE, userId, token })
+  }
 }
 
 export function signup(email, password){
@@ -35,7 +40,7 @@ export function signup(email, password){
     }
 
     const responseData = await response.json()
-    dispatch(authenticate(responseData.localId, responseData.idToken))
+    dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn) * 1000))
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000)
     saveDataToStorage(responseData.idToken, responseData.localId, expirationDate)
   }
@@ -68,14 +73,30 @@ export function login(email, password){
     }
 
     const responseData = await response.json()
-    dispatch(authenticate(responseData.localId, responseData.idToken))
+    dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn) * 1000))
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000)
     saveDataToStorage(responseData.idToken, responseData.localId, expirationDate)
   }
 }
 
 export function logout(){
+  clearLogoutTimer()
+  AsyncStorage.removeItem('userData')
   return { type: LOGOUT }
+}
+
+function clearLogoutTimer(){
+  if(timer){
+    clearTimeout(timer)
+  }
+}
+
+function setLogoutTimer(expirationTime){
+  return dispatch => {
+    timer = setTimeout(() => {
+      dispatch(logout())
+    }, expirationTime)
+  }
 }
 
 function saveDataToStorage(token, userId, expirationDate){
