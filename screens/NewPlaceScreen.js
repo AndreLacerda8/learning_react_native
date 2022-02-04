@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { ImgPicker } from '../components/ImgPicker'
+import { LocationPicker } from '../components/LocationPicker'
 
 import Colors from '../constants/Colors'
 import * as placesActions from '../store/places-actions'
@@ -35,6 +36,7 @@ export function NewPlaceScreen(props){
           onChangeText={titleChangeHandler}
         />
         <ImgPicker onImageTake={imageTakeHandler} />
+        <LocationPicker />
         <Button
           title='Save Place'
           color={Colors.primary}
