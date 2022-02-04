@@ -1,4 +1,3 @@
-import { ActionSheetIOS } from 'react-native'
 import { Place } from '../models/place'
 import { ADD_PLACE } from './places-actions'
 
@@ -7,9 +6,13 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  switch(ActionSheetIOS.type){
+  switch(action.type){
     case ADD_PLACE:
-      const newPlace = new Place(new Date().toString(), action.placeData.title)
+      const newPlace = new Place(
+        new Date().toString(),
+        action.placeData.title,
+        action.placeData.image
+      )
       return {
         places: state.places.concat(newPlace)
       }
