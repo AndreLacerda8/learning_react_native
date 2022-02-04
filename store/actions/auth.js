@@ -4,6 +4,7 @@ import { URL_SIGNUP, URL_SIGNIN } from '@env'
 // export const SIGNUP = 'SIGNUP'
 // export const LOGIN = 'LOGIN'
 export const AUTHENTICATE = 'AUTHENTICATE'
+export const LOGOUT = 'LOGOUT'
 
 export function authenticate(userId, token){
   return { type: AUTHENTICATE, userId, token }
@@ -71,6 +72,10 @@ export function login(email, password){
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000)
     saveDataToStorage(responseData.idToken, responseData.localId, expirationDate)
   }
+}
+
+export function logout(){
+  return { type: LOGOUT }
 }
 
 function saveDataToStorage(token, userId, expirationDate){
